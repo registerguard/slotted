@@ -1,0 +1,111 @@
+<csr:rule name="custom.rg.GetStoriesRule" match="custom:rg:get:stories">
+	
+	<csr:class super="dt.common.page.Rule, %CSP.RuleBlock" />
+	
+	<csr:description>
+		
+		<p>The <code>custom:rg:get:stories</code> tag returns a list of <code>CMSStory</code> objects that have been assigned to the attribute <code>value</code>.</p>
+		
+		<p>The <code>value</code> of each Story is a <class>dt.cms.schema.CMSStory</class> object.</p>
+		
+		<p><a href="https://github.com/registerguard/custom.rg.GetStoriesRule">Further documentation and examples</a>.</p>
+		
+	</csr:description>
+	
+	<csr:attribute name="publication" description="Publication name; gPublication.GetName() used by default."     type="publication:STRING"          />
+	<csr:attribute name="section"     description="Section name; gSection.GetName() used by default."             type="section:STRING"              />
+	<csr:attribute name="layout"      description="Page Layout name. (required)"                                  type="layout:STRING"      required />
+	<csr:attribute name="grid"        description="Grid name. (required)"                                         type="grid:STRING"        required />
+	<csr:attribute name="area"        description="Area(s) name. (required)"                                      type="area:STRING"        required />
+	<csr:attribute name="items"       description="Number of CMSStory objects to return. The default is 5."       type="items:INTEGER"               />
+	<csr:attribute name="include"     description="Include only these slots (comma delimited list)."              type="include:STRING"              />
+	<csr:attribute name="exclude"     description="Exclude only these slots (comma delimited list)."              type="exclude:STRING"              />
+	<csr:attribute name="version"     description="Staging version(s) to pull from."                              type="version:INTEGER"             />
+	<csr:attribute name="order"       description="Custom ORDER BY used in SQL statement."                        type="order:STRING"                />
+	<csr:attribute name="direction"   description="Direction of iteration, either forward (default) or backward." type="direction:STRING"            />
+	<csr:attribute name="count"       description="Counter. The default name is count."                           type="count:INTEGER"               />
+	<csr:attribute name="value"       description="CMSStory object. The default name is 'value'."                 type="value:OBJECT"                />
+	<csr:attribute name="obj"         description="The name of a local list object variable."                     type="obj:OBJECT"                  />
+	<csr:attribute name="total"       description="Total number of CMSStory objects."                             type="total:INTEGER"               />
+	
+	<csr:action>
+		
+		<script language="cache" runat="compiler">
+			do ##this.RenderDTStartTag()
+		</script>
+		
+		<script language="cache" runat="compiler">
+			
+			new csr
+			
+			// Unlike "GetAttribute", "QuoteAttribute" allows us to set #()# variable attributes:
+			set csr("publication") = ##this.QuoteAttribute("publication",    "")
+			set csr("section")     = ##this.QuoteAttribute("section",        "")
+			set csr("layout")      = ##this.QuoteAttribute("layout",         "")
+			set csr("grid")        = ##this.QuoteAttribute("grid",           "")
+			set csr("area")        = ##this.QuoteAttribute("area",           "")
+			set csr("items")       = ##this.QuoteAttribute("items",         "5")
+			set csr("include")     = ##this.QuoteAttribute("include",        "")
+			set csr("exclude")     = ##this.QuoteAttribute("exclude",        "")
+			set csr("version")     = ##this.QuoteAttribute("version",        "")
+			set csr("order")       = ##this.QuoteAttribute("order",          "")
+			// I can't seem to get these to work with QuoteAttribute:
+			set csr("direction")   = ##this.GetAttribute("direction", "forward")
+			set csr("count")       = ##this.GetAttribute("count",       "count")
+			set csr("value")       = ##this.GetAttribute("value",       "value")
+			set csr("obj")         = ##this.GetAttribute("obj",           "obj")
+			set csr("total")       = ##this.GetAttribute("total",       "total")
+			
+			set csr("next") = $case($zconvert(csr("direction"), "U"), "BACKWARD":"Previous", :"Next")
+			
+			do ##this.NewBlock()
+			
+			set ##this.EndLabel = ##this.GetNewLabel()
+			set ##this.NextLabel = ##this.GetNewLabel()
+			
+			do ##this.WriteServer(" new " _ csr("count") _ ", " _ csr("total") _ ", " _ csr("value") _ ", " _ csr("obj") ) // Warning: You must/should declare all 'runat="server"' variables as 'new'!
+			do ##this.WriteServer(" set " _ csr("obj") _ " = ##class(custom.rg.Slots).getStories($case(" _ csr("publication") _ ", """":gPublication.getName(), :" _ csr("publication") _ "), $case(" _ csr("section") _ ", """":gSection.getName(), :" _ csr("section") _ "), " _ csr("layout") _ ", " _ csr("grid") _ ", " _ csr("area") _ ", " _ csr("items") _ ", " _ csr("include") _ ", " _ csr("exclude") _ ", " _ csr("version") _ ", " _ csr("order") _ ") ")
+			do ##this.WriteServer(" set " _ csr("total") _ " = " _ csr("obj") _ ".Count() ")
+			do ##this.WriteServer(" set " _ csr("count") _ " = """" ")
+			do ##this.WriteServer( ##this.NextLabel _ " set " _ csr("value") _ " = " _ csr("obj") _ ".Get" _ csr("next") _ "(." _ csr("count") _ ") ")
+			do ##this.WriteServer(" if (" _ csr("count") _ " = """") { ")
+			do ##this.WriteServer(" 	goto " _ ##this.EndLabel _ " ;{ ")
+			do ##this.WriteServer(" } ")
+			
+			kill csr
+			
+		</script>
+		
+		<csr:children>
+		
+		<script language="cache" runat="compiler">
+			
+			do ##this.WriteServer(" goto " _ ##this.NextLabel)
+			do ##this.WriteServer( ##this.EndLabel _ " ;} ")
+			
+			; Note: Variables from the previous runat="compiler" are not available in this block.
+			; Hence the need to get setup csr and get attributes, again.
+			 
+			new csr
+			
+			set csr("direction") = ##this.GetAttribute("direction", "forward")
+			set csr("count")     = ##this.GetAttribute("count",       "count")
+			set csr("value")     = ##this.GetAttribute("value",       "value")
+			set csr("obj")       = ##this.GetAttribute("obj",           "obj")
+			set csr("total")     = ##this.GetAttribute("total",       "total")
+			
+			do ##this.WriteServer(" kill " _ csr("count") _ ", " _ csr("total") _ ", " _ csr("value") _ ", " _ csr("obj") )
+			
+			kill csr
+			
+			do ##this.RemoveBlock()
+			
+		</script>
+		
+		<script language="cache" runat="compiler">
+			do ##this.RenderDTEndTag()
+		</script>
+		
+	</csr:action>
+	
+</csr:rule>

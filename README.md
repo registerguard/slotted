@@ -1,8 +1,8 @@
 # Slotted
 
-#### Get slotted stories using `<custom:rg:get:stories ...>...</custom:rg:get:stories>` RULE and/or `##class(custom.rg.GetStoriesRule).stories()` ClassMethod.
+#### Get slotted stories using `<custom:rg:get:stories ...>...</custom:rg:get:stories>` tag and/or `##class(custom.rg.GetStoriesRule).stories()` ClassMethod.
 
-Tested and optimized for use on DTI's [ContentPublisher](http://www.dtint.com/our-solutions/content-publisher/) `v7.7.3` system running [Caché](http://www.intersystems.com/cache/index.html) for Windows (`x86-64`) `2009.1.5` (Build `901_0_11112U`).
+**Tested and optimized for use on DTI's [ContentPublisher](http://www.dtint.com/our-solutions/content-publisher/) `v7.7.3` system running [Caché](http://www.intersystems.com/cache/index.html) for Windows (`x86-64`) `2009.1.5` (Build `901_0_11112U`).**
 
 Based on DTI's `dt.cms.support.TopSlotStories`.
 
@@ -31,7 +31,7 @@ Many thanks goes to DTI, Joy and Eric for the [pro help and inspiration](https:/
 
 #### DETAILS
 
-## `<custom:rg:get:stories ...>...</custom:rg:get:stories>` RULE
+## `<custom:rg:get:stories>` tag
 
 ### `custom.rg.GetStoriesRule` attributes:
 
@@ -168,6 +168,8 @@ Many thanks goes to DTI, Joy and Eric for the [pro help and inspiration](https:/
 > 		</ul>
 > 	</li>
 > </ol>
+
+Check out [`slotted/test.csp`](https://github.com/registerguard/slotted/blob/master/slotted/test.csp) for a full code example.
 
 ---
 

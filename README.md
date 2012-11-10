@@ -1,6 +1,6 @@
 # Slotted
 
-### Get slotted stories using `custom:rg:get:stories` RULE and/or `custom_rg.Slots` class.
+### Get slotted stories using `custom:rg:get:stories` RULE and/or `custom_rg.Slotted` class.
 
 Tested for use on DTI's [ContentPublisher](http://www.dtint.com/our-solutions/content-publisher/) v7.7.3 system running [Caché](http://www.intersystems.com/cache/index.html) for Windows (x86-64) 2009.1.5 (Build 901_0_11112U).
 

@@ -1,13 +1,23 @@
 Include Audience
 
-Class custom.rg.Slots Extends (%Persistent, %Populate, %XML.Adaptor)
+/// custom.rg.Slotted
+/// See <code>custom.rg.GetStoriesRule</code> for related code.
+///
+/// @docs https://github.com/registerguard/slotted
+/// @copyright Copyright (c) 2012 Micky Hulse/The Register-Guard.
+/// @license Released under the Apache License, Version 2.0.
+/// http://www.apache.org/licenses/LICENSE-2.0
+/// @version 1.0.0
+/// @date Friday, November 12, 2012
+Class custom.rg.Slotted Extends (%Persistent, %Populate, %XML.Adaptor)
 {
 
-/// The <method>getStories</method> ClassMethod gets the slotted stories from a user defined Section.
+/// The <method>stories</method> ClassMethod gets slotted stories from a Section.
 /// Based on DTI's <class>dt.cms.support.TopSlotStories</class>.
+/// Many thanks goes to DTI, Joy and Eric for the pro help and inspiration.
 /// 
 /// @see https://groups.google.com/d/topic/dti-lightning/5avEj-4twNE/discussion
-/// @see https://github.com/registerguard/custom.rg.GetStoriesRule
+/// @see https://github.com/registerguard/slotted/issues/2
 /// 
 /// @param publication { %String } Required. Publication name.
 /// @param section { %String } Required. Section name.
@@ -19,7 +29,7 @@ Class custom.rg.Slots Extends (%Persistent, %Populate, %XML.Adaptor)
 /// @param exclude { %String } Exclude only these slots (comma delimited list).
 /// @param version { %String } Staging version(s) to pull from.
 /// @param order { %String } Custom ORDER BY used in SQL statement.
-ClassMethod getStories(
+ClassMethod stories(
 	publication As %String = "",
 	section As %String = "",
 	layout As %String = "",
@@ -42,7 +52,7 @@ ClassMethod getStories(
 	 * @see https://gist.github.com/4008569
 	 *
 	 * @param %list { string } Comma delimited list; this argument must be passed as a variable (not a string).
-	 * @return %List
+	 * @return { $list } The %list parameter as a $list.
 	 */
 	
 	#define lister(%list)                                                                   ##Continue
@@ -50,7 +60,8 @@ ClassMethod getStories(
 		for ##Unique(new)=1:1:$length(%list, ",") {                                         ##Continue
 			set temp = temp _ $listbuild($zstrip($piece(%list, ",", ##Unique(old)), "<>W")) ##Continue
 		}                                                                                   ##Continue
-		set %list = temp
+		set %list = temp                                                                    ##Continue
+		kill temp
 	
 	/*----------------------------------*/
 	
@@ -62,7 +73,7 @@ ClassMethod getStories(
 	 * w params(1)
 	 * // someMethod(params...)
 	 *
-	 * @see http://rgne.ws/QjjrSx
+	 * @see http://docs.intersystems.com/cache20091/csp/docbook/DocBook.UI.Page.cls?KEY=GOBJ_methods#GOBJ_methods_args_variable
 	 * @see https://groups.google.com/d/topic/dti-lightning/5avEj-4twNE/discussion
 	 *
 	 * @param %v { mixed } Key value for "params" array.
@@ -82,15 +93,11 @@ ClassMethod getStories(
 		; Get RULE debug:
 		set debug = ##class(dt.cms.support.Rules).getDebug()
 		
-		/*----------------------------------*/
-		
 		; Convert comma delimited string of Area(s) into a $list:
 		$$$lister(area)
 		
 		; Convert comma delimited string of Staging Version(s) into a $list:
 		$$$lister(version) // -1 = staged, 0 = live, 1 = rollback 1, 2 = rollback 2 ... (see "ContentPublisher" >> "Web Site" >> "Staging Version" for more info).
-		
-		/*----------------------------------*/
 		
 		; Build query:
 		set sql =
@@ -105,12 +112,10 @@ ClassMethod getStories(
 			"AND mp.sectionId = se.%ID " _ 
 			"AND pb.name = ? " _        // publication
 			"AND se.name = ? " _        // section
-			"AND pl.name = ? " _        // pagelayoutname
+			"AND pl.name = ? " _        // layout
 			"AND gr.name = ? " _        // grid
 			"AND ar.name %INLIST ? " _  // area
 			"AND mp.version %INLIST ? " // version
-		
-		/*----------------------------------*/
 		
 		; Setup "params" array for required input parameters:
 		$$$pbuild(items)
@@ -120,8 +125,6 @@ ClassMethod getStories(
 		$$$pbuild(grid)
 		$$$pbuild(area)
 		$$$pbuild(version)
-		
-		/*----------------------------------*/
 		
 		; Includes?
 		if ($length(include)) {
@@ -151,36 +154,36 @@ ClassMethod getStories(
 			
 		}
 		
-		/*----------------------------------*/
-		
 		; Order by what?
 		set sql = sql _ "ORDER BY " _ $select($length(order):order, 1:"mp.slotReferenceID ASC")
-		
-		/*----------------------------------*/
 		
 		; Output debug?
 		if (debug) {
 			
-			do ##class(dt.cms.support.Rules).debugRule(debug, "<p>sql=" _ sql _ "</p>")
+			; The query:
+			do ##class(dt.cms.support.Rules).debugRule(debug, "<p>sql = " _ sql _ "</p>")
 			
-			do ##class(dt.cms.support.Rules).debugRule(debug, "<p>items=" _ items _ " publication=" _ publication _ " section=" _ section _ " pagelayoutname=" _ layout _ " grid=" _ grid _ " area=" _ area _ " items=" _ items _ " include=" _ include _ " exclude=" _ exclude _ " version=" _ version _ " orderby=" _ order _ "</p>")
+			; ClassMethod arguements:
+			do ##class(dt.cms.support.Rules).debugRule(debug, "<p>stories(publication=""" _ publication _ """ section=""" _ section _ """ layout=""" _ layout _ """ grid=""" _ grid _ """ area=""" _ area _ """ items=""" _ items _ """ include=""" _ include _ """ exclude=""" _ exclude _ """ version=""" _ version _ """ order=""" _ order _ """)</p>")
 			
 		}
 		
-		/*----------------------------------*/
-		
+		; Try/catch block required when using $$$dtThrow:
 		try {
 			
+			; %importPackages:
 			set packages = "" // Used for resolving unqualified table references (it's best, and faster, to fully qualify tables with their scheme).
 			
 			; No need for:
-			//set rs = ##class(%ResultSet.SQL).%New()
+			//set rs = ##class(%ResultSet.SQL).%New() // http://docs.intersystems.com/cache20091/csp/docbook/DocBook.UI.Page.cls?KEY=GSQL_dynsql#GSQL_dynsql_resultset
 			
 			; Prepare and execute the query:
 			set rs = ##class(%ResultSet.SQL).%Prepare(sql, .error, packages, params...) // @@UNS: Use $$$dtQueryGet(sql, params...)
 			
+			; An error will be a %SYSTEM.Error object:
 			if ($isobject(error)) {
 				
+				; Throws if %sc is an error:
 				$$$dtThrow($$$dtSysErr(error.Status),"Failed to execute: ##class(%ResultSet.SQL).%Prepare(""" _ $get(sql) _ """)")
 				
 			} else {
@@ -197,10 +200,12 @@ ClassMethod getStories(
 					; Return the results in a list:
 					do return.Insert(##class(dt.cms.schema.CMSStory).%OpenId(rs.%GetData(1),, .sc))
 					
+					; Throws if %sc is an error:
 					$$$dtThrow(sc, "Failed to open CMSStory: ##class(dt.cms.schema.CMSStory).%OpenId(" _ rs.%GetData(1) _ ")")
 					
 				}
 				
+				; Throws if %sc is an error:
 				$$$dtThrow(sc, "Failed to get query element: rs.%Next(.sc)")
 				
 				//do rs.Close() // Defunct. Better to use:
@@ -210,14 +215,14 @@ ClassMethod getStories(
 			
 		} catch(e) {
 			
+			; Throws if %sc is an error:
 			$$$dtThrow(e.AsStatus(), "Something failed.")
 			
 		}
 		
-		/*----------------------------------*/
-		
 	}
 	
+	; Return the %List:
 	quit return
 }
 

@@ -4,9 +4,15 @@
 	
 	<csr:description>
 		
-		<p>The <code>custom:rg:get:stories</code> tag returns a list of <code>CMSStory</code> objects that have been assigned to the attribute <code>value</code>.</p>
+		<h1>custom.rg.GetStoriesRule</h1>
 		
-		<p>The <code>value</code> of each Story is a <class>dt.cms.schema.CMSStory</class> object.</p>
+		<h2>v1.0.0</h2>
+		
+		<p>
+			The <code><custom:rg:get:stories ...>...</custom:rg:get:stories></code> tag returns a list of <code>CMSStory</code> objects that have been assigned to the attribute <code>value</code>.
+			<br>
+			The <code>value</code> of each Story is a <class>dt.cms.schema.CMSStory</class> object.
+		</p>
 		
 		<p><a href="https://github.com/registerguard/custom.rg.GetStoriesRule">Further documentation and examples</a>.</p>
 		
@@ -36,9 +42,10 @@
 		
 		<script language="cache" runat="compiler">
 			
+			; Initialize:
 			new csr
 			
-			// Unlike "GetAttribute", "QuoteAttribute" allows us to set #()# variable attributes:
+			; QuoteAttribute: The value is quoted for substitution with #()#, ##( )## and ##''## expressions resolved. 
 			set csr("publication") = ##this.QuoteAttribute("publication",    "")
 			set csr("section")     = ##this.QuoteAttribute("section",        "")
 			set csr("layout")      = ##this.QuoteAttribute("layout",         "")
@@ -49,22 +56,25 @@
 			set csr("exclude")     = ##this.QuoteAttribute("exclude",        "")
 			set csr("version")     = ##this.QuoteAttribute("version",        "")
 			set csr("order")       = ##this.QuoteAttribute("order",          "")
-			// I can't seem to get these to work with QuoteAttribute:
+			
+			; GetAttribute: The value already has any ##( )## and ##''## expressions resolved.
 			set csr("direction")   = ##this.GetAttribute("direction", "forward")
 			set csr("count")       = ##this.GetAttribute("count",       "count")
 			set csr("value")       = ##this.GetAttribute("value",       "value")
 			set csr("obj")         = ##this.GetAttribute("obj",           "obj")
 			set csr("total")       = ##this.GetAttribute("total",       "total")
 			
+			; Should the list be ouput in a forward or backward direction?
 			set csr("next") = $case($zconvert(csr("direction"), "U"), "BACKWARD":"Previous", :"Next")
 			
+			; Handle blocks and labels:
 			do ##this.NewBlock()
-			
 			set ##this.EndLabel = ##this.GetNewLabel()
 			set ##this.NextLabel = ##this.GetNewLabel()
 			
+			; Write code to server:
 			do ##this.WriteServer(" new " _ csr("count") _ ", " _ csr("total") _ ", " _ csr("value") _ ", " _ csr("obj") ) // Warning: You must/should declare all 'runat="server"' variables as 'new'!
-			do ##this.WriteServer(" set " _ csr("obj") _ " = ##class(custom.rg.Slots).getStories($case(" _ csr("publication") _ ", """":gPublication.getName(), :" _ csr("publication") _ "), $case(" _ csr("section") _ ", """":gSection.getName(), :" _ csr("section") _ "), " _ csr("layout") _ ", " _ csr("grid") _ ", " _ csr("area") _ ", " _ csr("items") _ ", " _ csr("include") _ ", " _ csr("exclude") _ ", " _ csr("version") _ ", " _ csr("order") _ ") ")
+			do ##this.WriteServer(" set " _ csr("obj") _ " = ##class(custom.rg.Slotted).stories($case(" _ csr("publication") _ ", """":gPublication.getName(), :" _ csr("publication") _ "), $case(" _ csr("section") _ ", """":gSection.getName(), :" _ csr("section") _ "), " _ csr("layout") _ ", " _ csr("grid") _ ", " _ csr("area") _ ", " _ csr("items") _ ", " _ csr("include") _ ", " _ csr("exclude") _ ", " _ csr("version") _ ", " _ csr("order") _ ") ")
 			do ##this.WriteServer(" set " _ csr("total") _ " = " _ csr("obj") _ ".Count() ")
 			do ##this.WriteServer(" set " _ csr("count") _ " = """" ")
 			do ##this.WriteServer( ##this.NextLabel _ " set " _ csr("value") _ " = " _ csr("obj") _ ".Get" _ csr("next") _ "(." _ csr("count") _ ") ")
@@ -72,6 +82,7 @@
 			do ##this.WriteServer(" 	goto " _ ##this.EndLabel _ " ;{ ")
 			do ##this.WriteServer(" } ")
 			
+			; Garbage collection:
 			kill csr
 			
 		</script>
@@ -80,25 +91,26 @@
 		
 		<script language="cache" runat="compiler">
 			
+			; Handle labels and blocks:
 			do ##this.WriteServer(" goto " _ ##this.NextLabel)
 			do ##this.WriteServer( ##this.EndLabel _ " ;} ")
+			do ##this.RemoveBlock()
 			
-			; Note: Variables from the previous runat="compiler" are not available in this block.
-			; Hence the need to get setup csr and get attributes, again.
-			 
+			; Initialize:
 			new csr
 			
+			; Get attributes:
 			set csr("direction") = ##this.GetAttribute("direction", "forward")
 			set csr("count")     = ##this.GetAttribute("count",       "count")
 			set csr("value")     = ##this.GetAttribute("value",       "value")
 			set csr("obj")       = ##this.GetAttribute("obj",           "obj")
 			set csr("total")     = ##this.GetAttribute("total",       "total")
 			
+			; Server garbage collection:
 			do ##this.WriteServer(" kill " _ csr("count") _ ", " _ csr("total") _ ", " _ csr("value") _ ", " _ csr("obj") )
 			
+			; Garbage collection:
 			kill csr
-			
-			do ##this.RemoveBlock()
 			
 		</script>
 		

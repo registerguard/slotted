@@ -2,7 +2,7 @@
 
 #### Get slotted stories using `<custom:rg:get:stories ...>...</custom:rg:get:stories>` RULE and/or `##class(custom.rg.GetStoriesRule).stories()` ClassMethod.
 
-Tested and optimized for use on DTI's [ContentPublisher](http://www.dtint.com/our-solutions/content-publisher/) v7.7.3 system running [Caché](http://www.intersystems.com/cache/index.html) for Windows (x86-64) 2009.1.5 (Build 901_0_11112U).
+Tested and optimized for use on DTI's [ContentPublisher](http://www.dtint.com/our-solutions/content-publisher/) `v7.7.3` system running [Caché](http://www.intersystems.com/cache/index.html) for Windows (`x86-64`) `2009.1.5` (Build `901_0_11112U`).
 
 Based on DTI's `dt.cms.support.TopSlotStories`.
 
@@ -12,7 +12,7 @@ Many thanks goes to DTI, Joy and Eric for the [pro help and inspiration](https:/
 
 ### FEATURES
 
-* One, or multiple, Areas (from a single section).
+* One, or multiple, Areas (from a single Section).
 * Slot(s) inclusion.
 * Slot(s) exclusion.
 * Ability to look at one, or multiple, Staging Versions.
@@ -25,7 +25,7 @@ Many thanks goes to DTI, Joy and Eric for the [pro help and inspiration](https:/
 * Defaults to `gSection` if Section is not defined.
 * Lots more DTI-approved error handling goodies.
 * All comma delimited strings are trimmed before being converted into a list for use with SQL; this makes it so you don't have to worry about white space! **Woot!** :D
-* Based on the awesome feedback from Joy and Eric, I've updated the query to use `%ResultSet.SQL` with smart param handling (thanks guys!).
+* Based on the awesome feedback from Joy and Eric, I've updated the query to use `%ResultSet.SQL` with smart param handling (thanks guys!!!!).
 
 ---
 

@@ -221,6 +221,48 @@ Check out [`slotted/test.csp`](https://github.com/registerguard/slotted/blob/mas
 
 ---
 
+#### TIP(S)
+
+Dynamically get the **current** `Page` (`dt.cms.schema.Page`):
+
+```
+set page = ##class(dt.cms.support.Utilities).getCurrentPage(gSection)
+```
+
+Dynamically get the **current** `Page Layout` (`dt.cms.schema.PageLayout`):
+
+```
+set pagelayout = ##class(dt.cms.support.Utilities).getCurrentPage(gSection).pageLayoutID
+```
+
+Dynamically get the **current** `Grid` (`dt.cms.schema.Grid`):
+
+```
+set grid = ##class(dt.cms.support.Utilities).getCurrentGrid(gSection)
+```
+
+The above methods are useful if you're not sure what `Grid` and/or `PageLayout` a `Section` will be using.
+
+Example:
+
+```
+<custom:rg:get:stories layout="#(##class(dt.cms.support.Utilities).getCurrentPage(gSection).pageLayoutID.name)#" grid="#(##class(dt.cms.support.Utilities).getCurrentGrid(gSection).name)#" area="Updates" items="10">
+	
+	<dti:story:use storyobj="#(value)#">
+		
+		<dti:story:element:exist field="Headline">
+			<h1><dti:story:link><dti:story:element field="Headline" extract="textonly" /></dti:story:link></h1>
+		</dti:story:element:exist>
+		
+	</dti:story:use>
+	
+</custom:rg:get:stories>
+```
+
+Ahhh, that's much better than having to hard code the attribute values for `layout` and `grid`. :)
+
+---
+
 #### INSTALLATION
 
 There's a couple ways (that I can think of) to install this code:

@@ -190,9 +190,30 @@ Check out [`slotted/test.csp`](https://github.com/registerguard/slotted/blob/mas
 
 ### `COS` example call:
 
-```txt
-##class(custom.rg.GetStoriesRule).stories(publication="rg" section="sports" layout="sports" grid="Default" area=" Top Stories Stories" items="10" include="" exclude="" version="0" order="")
 ```
+#[ new slotted set slotted = ##class(custom.rg.Slotted).stories(publication="rg" section="sports" layout="sports" grid="Default" area="Top Stories, Stories" items="10" include="" exclude="" version="0" order="") ]#
+
+<ul>
+	<csp:loop counter="x" from="1" to="#(slotted.Count())#">
+		<li>#(slotted.GetAt(x))#</li>
+	</csp:loop>
+</ul>
+
+#[ kill slotted ]#
+```
+
+### `html` output:
+
+> <ul>
+> 	<li>13@dt.cms.schema.CMSStory</li>
+> 	<li>14@dt.cms.schema.CMSStory</li>
+> 	<li>15@dt.cms.schema.CMSStory</li>
+> 	<li>16@dt.cms.schema.CMSStory</li>
+> 	<li>17@dt.cms.schema.CMSStory</li>
+> 	<li>18@dt.cms.schema.CMSStory</li>
+> 	<li>19@dt.cms.schema.CMSStory</li>
+> 	<li>20@dt.cms.schema.CMSStory</li>
+> </ul>
 
 ---
 

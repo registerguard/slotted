@@ -241,7 +241,7 @@ Dynamically get the **current** `Grid` (`dt.cms.schema.Grid`):
 set grid = ##class(dt.cms.support.Utilities).getCurrentGrid(gSection)
 ```
 
-The above methods are useful if you're not sure what `Grid` and/or `PageLayout` a `Section` will be using.
+The above methods are useful if you're not sure what `PageLayout` and/or `Grid` a `Section` will be using.
 
 Example:
 

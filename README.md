@@ -48,7 +48,7 @@ Based on DTI's `dt.cms.support.TopSlotStories`.
 11. `direction`: Direction of iteration; either forward (default) or backward.
 12. `count`: Loop counter name; the default name is '`count`'.
 13. `value`: `CMSStory` object name; the default name is '`value`'.
-14. `obj`: Local `%List` object variable name; the default name is '`obj`'
+14. `obj`: Local `%List` object variable name; the default name is '`obj`'.
 15. `total`: Total number of `CMSStory` objects returned.
 
 ### Example call:

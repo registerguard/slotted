@@ -33,7 +33,7 @@
 	<csr:attribute name="direction"   description="Direction of iteration; either forward (default) or backward."    type="direction:STRING"            />
 	<csr:attribute name="count"       description="Loop counter name; the default name is 'count'."                  type="count:INTEGER"               />
 	<csr:attribute name="value"       description="CMSStory object name; the default name is 'value'."               type="value:OBJECT"                />
-	<csr:attribute name="obj"         description="Local %List object variable name; the default name is 'obj'"      type="obj:OBJECT"                  />
+	<csr:attribute name="obj"         description="Local %List object variable name; the default name is 'obj'."     type="obj:OBJECT"                  />
 	<csr:attribute name="total"       description="Total number of CMSStory objects returned."                       type="total:INTEGER"               />
 	
 	<csr:action>

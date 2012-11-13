@@ -1,31 +1,31 @@
 # Slotted
 
-#### Get slotted stories using `<custom:rg:get:stories ...>...</custom:rg:get:stories>` tag and/or `##class(custom.rg.GetStoriesRule).stories()` ClassMethod.
+#### Get slotted stories using `<custom:rg:get:stories>` tag and/or `##class(custom.rg.GetStoriesRule).stories()` ClassMethod.
 
-**Tested and optimized for use on DTI's [ContentPublisher](http://www.dtint.com/our-solutions/content-publisher/) `v7.7.3` system running [Caché](http://www.intersystems.com/cache/index.html) for Windows (`x86-64`) `2009.1.5` (Build `901_0_11112U`).**
+Tested and optimized for use on DTI's [ContentPublisher](http://www.dtint.com/our-solutions/content-publisher/) `v7.7.3` system running [Caché](http://www.intersystems.com/cache/index.html) for Windows (`x86-64`) `2009.1.5` (Build `901_0_11112U`).
 
 Based on DTI's `dt.cms.support.TopSlotStories`.
 
-Many thanks goes to DTI, Joy and Eric for the [pro help and inspiration](https://groups.google.com/forum/#!topic/dti-lightning/5avEj-4twNE/discussion).
+**Many thanks goes to DTI, Joy and Eric for the [pro help and inspiration](https://groups.google.com/forum/#!topic/dti-lightning/5avEj-4twNE/discussion).**
 
 ---
 
 ### FEATURES
 
-* One, or multiple, Areas (from a single Section).
-* Slot(s) inclusion.
-* Slot(s) exclusion.
-* Ability to look at one, or multiple, Staging Versions.
+* One, or multiple, `Area`s (from a single `Section`).
+* `Slot`(s) inclusion.
+* `Slot`(s) exclusion.
+* Ability to look at one, or multiple, `Staging Versions`.
 * A counter while iterating over `CMSStory` objects.
-* A "total" number of returned `CMSStory` objects (so you can check for "first" or "last" items).
-* Customizable `ORDER BY` (useful when looking at multiple Areas and/or Staging Versions).
+* A "`total`" number of returned `CMSStory` objects (so you can check for "first" or "last" items).
+* Customizable `ORDER BY` (useful when looking at multiple `Areas` and/or `Staging Versions`).
 * Applicable attribute have been setup to handle `#()#` runtime expressions as values.
-* Optimized garbage collection of local vars.
-* Defauts to `gPublication` if Publication is not defined.
-* Defaults to `gSection` if Section is not defined.
+* Optimized/optimal garbage collection of local variables.
+* Defauts to `gPublication.getName()` if a `Publication` name is not defined.
+* Defaults to `gSection.getName()` if a `Section` name is not defined.
 * Lots more DTI-approved error handling goodies.
-* All comma delimited strings are trimmed before being converted into a list for use with SQL; this makes it so you don't have to worry about white space! **Woot!** :D
-* Based on the awesome feedback from Joy and Eric, I've updated the query to use `%ResultSet.SQL` with smart param handling (thanks guys!!!!).
+* All comma delimited strings are trimmed before being converted into a `$list` for use with the `SQL` statement; no more white space woes! **Woot!** :D
+* Based on the awesome feedback from **Joy** and **Eric**, I've updated the `query` to use `%ResultSet.SQL` with smart parameter handling (**thanks guys!!!!**).
 
 ---
 
@@ -35,21 +35,21 @@ Many thanks goes to DTI, Joy and Eric for the [pro help and inspiration](https:/
 
 ### `custom.rg.GetStoriesRule` attributes:
 
-1. `publication`: Publication name; gPublication.GetName() used by default.
-2. `section`: Section name; gSection.GetName() used by default.
-3. `layout`: Page Layout name. (required)
-4. `grid`: Grid name. (required)
-5. `area`: Area(s) name. (required)
-6. `items`: Number of CMSStory objects to return. The default is 5.
-7. `include`: Include only these slots (comma delimited list).
-8. `exclude`: Exclude only these slots (comma delimited list).
-9. `version`: Staging version(s) to pull from.
-10. `order`: Custom ORDER BY used in SQL statement.
-11. `direction`: Direction of iteration, either forward (default) or backward.
-12. `count`: Counter. The default name is count.
-13. `value`: CMSStory object. The default name is 'value'.
-14. `obj`: The name of a local list object variable.
-15. `total`: Total number of CMSStory objects.
+1. `publication`: `Publication` name; `gPublication.GetName()` used by default.
+2. `section`: `Section` name; `gSection.GetName()` used by default.
+3. `layout`: `Page Layout` name (required).
+4. `grid`: `Grid` name (required).
+5. `area`: `Area`(s) name (required).
+6. `items`: Number of `CMSStory` objects to return; the default number is '`5`'.
+7. `include`: Include only these `Slots` (comma delimited list).
+8. `exclude`: Exclude only these `Slots` (comma delimited list).
+9. `version`: `Staging Version`(s) to pull from; '`0`' (live) used by default.
+10. `order`: Custom `ORDER BY`, used in `SQL` statement.
+11. `direction`: Direction of iteration; either forward (default) or backward.
+12. `count`: Loop counter name; the default name is '`count`'.
+13. `value`: `CMSStory` object name; the default name is '`value`'.
+14. `obj`: Local `%List` object variable name; the default name is '`obj`'
+15. `total`: Total number of `CMSStory` objects returned.
 
 ### Example call:
 
@@ -177,22 +177,49 @@ Check out [`slotted/test.csp`](https://github.com/registerguard/slotted/blob/mas
 
 ### `##class(custom.rg.GetStoriesRule).stories()` parameters:
 
-1. `publication`: Required. Publication name.
-2. `section`: Required. Section name.
-3. `layout`: Required. Page Layout name.
-4. `grid`: Required. Grid name.
-5. `area`: Required. Area(s) name.
-6. `items`: Number of CMSStory objects to return. The default is 5.
-7. `include`: Include only these slots (comma delimited list).
-8. `exclude`: Exclude only these slots (comma delimited list).
-9. `version`: Staging version(s) to pull from.
-10. `order`: Custom ORDER BY used in SQL statement.
+1. `publication`: `Publication` name (required).
+2. `section`: `Section` name (required).
+3. `layout`: `Page Layout` name (required).
+4. `grid`: `Grid` name (required).
+5. `area`: `Area`(s) name (required).
+6. `items`: Number of `CMSStory` objects to return; the default number is '`5`'.
+7. `include`: Include only these `Slots` (comma delimited list).
+8. `exclude`: Exclude only these `Slots` (comma delimited list).
+9. `version`: `Staging Version`(s) to pull from; '0' (live) used by default.
+10. `order`: Custom `ORDER BY`, used in `SQL` statement.
 
 ### `COS` example call:
 
 ```txt
 ##class(custom.rg.GetStoriesRule).stories(publication="rg" section="sports" layout="sports" grid="Default" area=" Top Stories Stories" items="10" include="" exclude="" version="0" order="")
 ```
+
+---
+
+#### INSTALLATION
+
+There's a couple ways (that I can think of) to install this code:
+
+### Copy/paste:
+
+1. Open Studio.
+2. Change to the `CMS` namespace.
+3. "File" >> "New..." and choose "Caché Class Definition" from "General" tab.
+4. Copy/paste the **RAW** contents `custom.rg.Slotted.cls` into this new file.
+5. Save this file as `custom.rg.Slotted.cls` to your `custom` package, in a sub package called `rg`.
+6. Compile.
+7. "File" >> "New..." and choose "Caché Server Page" from "CSP File" tab.
+8. Copy/paste the **RAW** contents of `custom.rg.GetStoriesRule.csr` into this new file.
+9. Save this file as `custom.rg.GetStoriesRule.csr` to the "CSP Files" >> `/csp/cms/customrules` package/folder/location.
+10. Compile.
+
+### Import local:
+
+1. Download and unzip this repo to your local machine.
+2. Open Studio.
+3. Change to the `CMS` namespace.
+4. "Tools" >> "Import Local...".
+5. Import `custom.rg.Slotted.xml`, `custom.rg.GetStoriesRule.csr` and check the compile box.
 
 ---
 

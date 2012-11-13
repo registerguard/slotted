@@ -9,8 +9,8 @@ See <code>custom.rg.GetStoriesRule</code> for related code.
 @copyright Copyright (c) 2012 Micky Hulse/The Register-Guard.
 @license Released under the Apache License, Version 2.0.
 http://www.apache.org/licenses/LICENSE-2.0
-@version 1.0.0
-@date Friday, November 12, 2012]]></Description>
+@version 1.0.1
+@date Monday, November 12, 2012]]></Description>
 <IncludeCode>Audience</IncludeCode>
 <Super>%Persistent,%Populate,%XML.Adaptor</Super>
 <TimeCreated>62770,78274.886304</TimeCreated>
@@ -23,19 +23,20 @@ Many thanks goes to DTI, Joy and Eric for the pro help and inspiration.
 
 @see https://groups.google.com/d/topic/dti-lightning/5avEj-4twNE/discussion
 @see https://github.com/registerguard/slotted/issues/2
+@see https://github.com/registerguard/slotted/issues/10
 
-@param publication { %String } Required. Publication name.
-@param section { %String } Required. Section name.
-@param layout { %String } Required. Page Layout name.
-@param grid { %String } Required. Grid name.
-@param area { %String } Required. Area(s) name.
-@param items { %String } Number of CMSStory objects to return. The default is 5.
-@param include { %String } Include only these slots (comma delimited list).
-@param exclude { %String } Exclude only these slots (comma delimited list).
-@param version { %String } Staging version(s) to pull from.
-@param order { %String } Custom ORDER BY used in SQL statement.]]></Description>
+@param publication { %String } Publication name (required).
+@param section { %String } Section name (required).
+@param layout { %String } Page Layout name (required).
+@param grid { %String } Grid name (required).
+@param area { %String } Area(s) name (required).
+@param items { %String } Number of CMSStory objects to return; the default number is '5'.
+@param include { %String } Include only these Slots (comma delimited list).
+@param exclude { %String } Exclude only these Slots (comma delimited list).
+@param version { %String } Staging Version(s) to pull from; '0' (live) used by default.
+@param order { %String } Custom ORDER BY, used in SQL statement.]]></Description>
 <ClassMethod>1</ClassMethod>
-<FormalSpec>publication:%String="",section:%String="",layout:%String="",grid:%String="",area:%String="",items:%Integer=5,include:%String="",exclude:%String="",version:%Integer=0,order:%String=""</FormalSpec>
+<FormalSpec>publication:%String="",section:%String="",layout:%String="",grid:%String="",area:%String="",items:%Integer=5,include:%String="",exclude:%String="",version:%String="0",order:%String=""</FormalSpec>
 <ReturnType>%List</ReturnType>
 <Implementation><![CDATA[
 	
@@ -44,6 +45,8 @@ Many thanks goes to DTI, Joy and Eric for the pro help and inspiration.
 	 *
 	 * set items = "foo, bar, baz"
 	 * $$$lister(items) // "items" is now a list.
+	 *
+	 * @todo Force %list argument into a string before processing? Example: set %list = %list _ ""
 	 *
 	 * @see https://groups.google.com/d/topic/intersystems-public-cache/8iJV1p3kwD8/discussion
 	 * @see https://gist.github.com/4008569
@@ -161,7 +164,7 @@ Many thanks goes to DTI, Joy and Eric for the pro help and inspiration.
 			do ##class(dt.cms.support.Rules).debugRule(debug, "<p>sql = " _ sql _ "</p>")
 			
 			; ClassMethod arguements:
-			do ##class(dt.cms.support.Rules).debugRule(debug, "<p>stories(publication=""" _ publication _ """ section=""" _ section _ """ layout=""" _ layout _ """ grid=""" _ grid _ """ area=""" _ area _ """ items=""" _ items _ """ include=""" _ include _ """ exclude=""" _ exclude _ """ version=""" _ version _ """ order=""" _ order _ """)</p>")
+			do ##class(dt.cms.support.Rules).debugRule(debug, "<p>stories(publication=""" _ publication _ """ section=""" _ section _ """ layout=""" _ layout _ """ grid=""" _ grid _ """ area=""" _ $listtostring(area, ", ") _ """ items=""" _ items _ """ include=""" _ $listtostring(include, ", ") _ """ exclude=""" _ $listtostring(exclude, ", ") _ """ version=""" _ $listtostring(version, ", ") _ """ order=""" _ order _ """)</p>")
 			
 		}
 		

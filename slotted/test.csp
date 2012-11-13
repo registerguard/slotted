@@ -144,6 +144,22 @@
 			
 		</ol>
 		
+		<hr>
+		
+		<h2>Testing method call:</h2>
+		
+		#[ new slotted set slotted = ##class(custom.rg.Slotted).stories(gPublication.getName(), gSection.getName(), g("pagelayout").name, g("grid").name, demo("area"), demo("items"), demo("include"), demo("exclude"), demo("version"), demo("order")) ]#
+		
+		<ul>
+			<csp:loop counter="x" from="1" to="#(slotted.Count())#">
+				
+				<li>#(slotted.GetAt(x))#</li>
+				
+			</csp:loop>
+		</ul>
+		
+		#[ kill slotted ]#
+		
 		#[ kill g ]#
 		
 	</csp:if>

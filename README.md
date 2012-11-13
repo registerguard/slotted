@@ -169,8 +169,6 @@ Based on DTI's `dt.cms.support.TopSlotStories`.
 > 	</li>
 > </ol>
 
-Check out [`slotted/test.csp`](https://github.com/registerguard/slotted/blob/master/slotted/test.csp) for a full code example.
-
 ---
 
 ## `##class(custom.rg.GetStoriesRule).stories()` ClassMethod
@@ -191,7 +189,7 @@ Check out [`slotted/test.csp`](https://github.com/registerguard/slotted/blob/mas
 ### `COS` example call:
 
 ```
-#[ new slotted set slotted = ##class(custom.rg.Slotted).stories(publication="rg" section="sports" layout="sports" grid="Default" area="Top Stories, Stories" items="10" include="" exclude="" version="0" order="") ]#
+#[ new slotted set slotted = ##class(custom.rg.Slotted).stories("rg", "sports", "sports", "Default", "Top Stories, Stories", 10) ]#
 
 <ul>
 	<csp:loop counter="x" from="1" to="#(slotted.Count())#">
@@ -214,6 +212,12 @@ Check out [`slotted/test.csp`](https://github.com/registerguard/slotted/blob/mas
 > 	<li>19@dt.cms.schema.CMSStory</li>
 > 	<li>20@dt.cms.schema.CMSStory</li>
 > </ul>
+
+---
+
+#### DEMO
+
+Check out [`slotted/test.csp`](https://github.com/registerguard/slotted/blob/master/slotted/test.csp) for a full code example.
 
 ---
 

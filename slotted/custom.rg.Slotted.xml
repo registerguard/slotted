@@ -161,10 +161,10 @@ Many thanks goes to DTI, Joy and Eric for the pro help and inspiration.
 		if (debug) {
 			
 			; The query:
-			do ##class(dt.cms.support.Rules).debugRule(debug, "<p>sql = " _ sql _ "</p>")
+			do ##class(dt.cms.support.Rules).debugRule(debug, "sql = " _ sql)
 			
 			; ClassMethod arguements:
-			do ##class(dt.cms.support.Rules).debugRule(debug, "<p>stories(publication=""" _ publication _ """ section=""" _ section _ """ layout=""" _ layout _ """ grid=""" _ grid _ """ area=""" _ $listtostring(area, ", ") _ """ items=""" _ items _ """ include=""" _ $listtostring(include, ", ") _ """ exclude=""" _ $listtostring(exclude, ", ") _ """ version=""" _ $listtostring(version, ", ") _ """ order=""" _ order _ """)</p>")
+			do ##class(dt.cms.support.Rules).debugRule(debug, "##class(custom.rg.Slotted).stories(publication=""" _ publication _ """ section=""" _ section _ """ layout=""" _ layout _ """ grid=""" _ grid _ """ area=""" _ $listtostring(area, ", ") _ """ items=""" _ items _ """ include=""" _ $listtostring(include, ", ") _ """ exclude=""" _ $listtostring(exclude, ", ") _ """ version=""" _ $listtostring(version, ", ") _ """ order=""" _ order _ """)")
 			
 		}
 		

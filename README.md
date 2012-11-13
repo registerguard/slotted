@@ -56,7 +56,7 @@ Based on DTI's `dt.cms.support.TopSlotStories`.
 ```
 <ol>
 	
-	 <custom:rg:get:stories layout="sports" grid="Default" area="Top Stories, Stories" version="0" include="" exclude="" order="" items="10" direction="forward" count="count" value="value" obj="obj" total="total">
+	 <custom:rg:get:stories layout="sports" grid="Default" area="Top Stories, Stories" items="10" include="" exclude="" version="0" order="" direction="forward" count="count" value="value" obj="obj" total="total">
 		
 		<li>
 			<b>Value:</b> #(value)#

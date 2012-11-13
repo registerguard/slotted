@@ -121,7 +121,7 @@
 		
 		<ol>
 			
-			<custom:rg:get:stories layout="#(g("pagelayout").name)#" grid="#(g("grid").name)#" area="#(demo("area"))#" version="#(demo("version"))#" include="#(demo("include"))#" exclude="#(demo("exclude"))#" order="#(demo("order"))#" items="#(demo("items"))#" direction="forward" count="count" value="value" obj="obj" total="total">
+			<custom:rg:get:stories layout="#(g("pagelayout").name)#" grid="#(g("grid").name)#" area="#(demo("area"))#" items="#(demo("items"))#" include="#(demo("include"))#" exclude="#(demo("exclude"))#" version="#(demo("version"))#" order="#(demo("order"))#" direction="forward" count="count" value="value" obj="obj" total="total">
 				
 				<li>
 					<b>Value:</b> #(value)#

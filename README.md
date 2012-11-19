@@ -12,6 +12,7 @@ Based on DTI's `dt.cms.support.TopSlotStories`.
 
 ### FEATURES
 
+* `Mapping` object is returned for easy access to more than just the `CMSStory` object.
 * One, or multiple, `Area`s (from a single `Section`).
 * `Slot`(s) inclusion.
 * `Slot`(s) exclusion.

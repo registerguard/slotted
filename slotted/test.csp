@@ -126,8 +126,15 @@
 				<li>
 					<b>Value:</b> #(value)#
 					<ul>
-						<li><b>File name:</b> <span style="color:blue">#(value.getName())#</span></li>
-						<li><b>publishedToWebDate:</b> #(value.publishedToWebDate)#</li>
+						<li><b>CMSStory</b> #(value.cmsStory)#</li>
+						<li><b>Slug:</b> <span style="color:blue">#(value.cmsStory.getName())#</span></li>
+						<li><b>publishedToWebDate:</b> #(value.cmsStory.publishedToWebDate)#</li>
+						<li>
+							<b>FullLayout:</b> #(value.localFullLayoutID)#
+							<ul>
+								<li><b>FullLayout name:</b> #(value.localFullLayoutID.name)#</li>
+							</ul>
+						</li>
 						<li><b>Total:</b> #(total)#</li>
 						<li><b>Count:</b> #(count)#</li>
 						<csp:if condition=(count=1)>
@@ -150,13 +157,13 @@
 		
 		#[ new slotted set slotted = ##class(custom.rg.Slotted).stories(gPublication.getName(), gSection.getName(), g("pagelayout").name, g("grid").name, demo("area"), demo("items"), demo("include"), demo("exclude"), demo("version"), demo("order")) ]#
 		
-		<ul>
+		<ol>
 			<csp:loop counter="x" from="1" to="#(slotted.Count())#">
 				
 				<li>#(slotted.GetAt(x))#</li>
 				
 			</csp:loop>
-		</ul>
+		</ol>
 		
 		#[ kill slotted ]#
 		
@@ -176,8 +183,21 @@
 
 <script language="cache" runat="server">
 	
-	set (gPublication, gSection) = "" // GC.
+	; Garbage collection:
+	set (gPublication, gSection) = ""
 	
-	w // Debug.
+	; Debug:
+	write !, "<pre>"
+	try {
+		set currIO = ##class(%SYS.NLS.Device).SetIO("HTML")
+		zwrite
+	}
+	catch {
+		write "ERROR: ", $ZERROR
+	}
+	if $get(currIO) '= "" {
+		do ##class(%SYS.NLS.Device).SetIO(currIO)
+	}
+	write "</pre>"
 	
 </script>

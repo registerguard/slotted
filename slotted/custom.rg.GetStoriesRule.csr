@@ -7,15 +7,14 @@
 		<h1>custom.rg.GetStoriesRule</h1>
 		
 		<ul>
-			<li>Version: v1.0.1</li>
-			<li>Date: Monday, November 12, 2012</li>
+			<li>Version: v2.0.0</li>
+			<li>Date: Monday, November 18, 2012</li>
 			<li>Docs: <a href="https://github.com/registerguard/slotted">https://github.com/registerguard/slotted</a></li>
 		</ul>
 		
 		<p>
-			The <code><custom:rg:get:stories></code> tag returns a list of <code>CMSStory</code> objects that have been assigned to the attribute <code>value</code>.
-			<br>
-			The <code>value</code> of each Story is a <class>dt.cms.schema.CMSStory</class> object.
+			The <code><custom:rg:get:stories></code> RULE (a.k.a tag) returns a %List of <code>Mapping</code> objects from an Area(s) in a Section.
+			Each object has been assigned to the attribute <code>value</code> which you can access in each itteration of the tag's loop.
 		</p>
 		
 	</csr:description>
@@ -25,16 +24,16 @@
 	<csr:attribute name="layout"      description="Page Layout name (required)."                                     type="layout:STRING"      required />
 	<csr:attribute name="grid"        description="Grid name (required)."                                            type="grid:STRING"        required />
 	<csr:attribute name="area"        description="Area(s) name (required)."                                         type="area:STRING"        required />
-	<csr:attribute name="items"       description="Number of CMSStory objects to return. The default number is '5'." type="items:INTEGER"               />
+	<csr:attribute name="items"       description="Number of Mapping objects to return. The default number is '5'."  type="items:INTEGER"               />
 	<csr:attribute name="include"     description="Include only these Slots (comma delimited list)."                 type="include:STRING"              />
 	<csr:attribute name="exclude"     description="Exclude only these Slots (comma delimited list)."                 type="exclude:STRING"              />
 	<csr:attribute name="version"     description="Staging Version(s) to pull from; '0' (live) used by default."     type="version:STRING"              />
 	<csr:attribute name="order"       description="Custom ORDER BY, used in SQL statement."                          type="order:STRING"                />
 	<csr:attribute name="direction"   description="Direction of iteration; either forward (default) or backward."    type="direction:STRING"            />
 	<csr:attribute name="count"       description="Loop counter name; the default name is 'count'."                  type="count:INTEGER"               />
-	<csr:attribute name="value"       description="CMSStory object name; the default name is 'value'."               type="value:OBJECT"                />
+	<csr:attribute name="value"       description="Mapping object name; the default name is 'value'."                type="value:OBJECT"                />
 	<csr:attribute name="obj"         description="Local %List object variable name; the default name is 'obj'."     type="obj:OBJECT"                  />
-	<csr:attribute name="total"       description="Total number of CMSStory objects returned."                       type="total:INTEGER"               />
+	<csr:attribute name="total"       description="Total number of Mapping objects returned."                        type="total:INTEGER"               />
 	
 	<csr:action>
 		

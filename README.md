@@ -1,6 +1,6 @@
 # Slotted
 
-#### Get slotted stories using `<custom:rg:get:stories>` tag and/or `##class(custom.rg.GetStoriesRule).stories()` ClassMethod.
+#### Get slotted stories (from the `Mapping` object) using `<custom:rg:get:stories>` tag and/or `##class(custom.rg.GetStoriesRule).stories()` ClassMethod.
 
 Tested and optimized for use on DTI's [ContentPublisher](http://www.dtint.com/our-solutions/content-publisher/) `v7.7.3` system running [Caché](http://www.intersystems.com/cache/index.html) for Windows (`x86-64`) `2009.1.5` (Build `901_0_11112U`).
 
@@ -16,8 +16,8 @@ Based on DTI's `dt.cms.support.TopSlotStories`.
 * `Slot`(s) inclusion.
 * `Slot`(s) exclusion.
 * Ability to look at one, or multiple, `Staging Versions`.
-* A counter while iterating over `CMSStory` objects.
-* A "`total`" number of returned `CMSStory` objects (so you can check for "first" or "last" items).
+* A counter while iterating over `Mapping` objects.
+* A "`total`" number of returned `Mapping` objects (so you can check for "first" or "last" items).
 * Customizable `ORDER BY` (useful when looking at multiple `Areas` and/or `Staging Versions`).
 * Applicable attribute have been setup to handle `#()#` runtime expressions as values.
 * Optimized/optimal garbage collection of local variables.
@@ -40,16 +40,16 @@ Based on DTI's `dt.cms.support.TopSlotStories`.
 3. `layout`: `Page Layout` name (required).
 4. `grid`: `Grid` name (required).
 5. `area`: `Area`(s) name (required).
-6. `items`: Number of `CMSStory` objects to return; the default number is '`5`'.
+6. `items`: Number of `Mapping` objects to return; the default number is '`5`'.
 7. `include`: Include only these `Slots` (comma delimited list).
 8. `exclude`: Exclude only these `Slots` (comma delimited list).
 9. `version`: `Staging Version`(s) to pull from; '`0`' (live) used by default.
 10. `order`: Custom `ORDER BY`, used in `SQL` statement.
 11. `direction`: Direction of iteration; either forward (default) or backward.
 12. `count`: Loop counter name; the default name is '`count`'.
-13. `value`: `CMSStory` object name; the default name is '`value`'.
+13. `value`: `Mapping` object name; the default name is '`value`'.
 14. `obj`: Local `%List` object variable name; the default name is '`obj`'.
-15. `total`: Total number of `CMSStory` objects returned.
+15. `total`: Total number of `Mapping` objects returned.
 
 ### Example call:
 
@@ -61,8 +61,15 @@ Based on DTI's `dt.cms.support.TopSlotStories`.
 		<li>
 			<b>Value:</b> #(value)#
 			<ul>
-				<li><b>File name:</b> <span style="color:blue">#(value.getName())#</span></li>
-				<li><b>publishedToWebDate:</b> #(value.publishedToWebDate)#</li>
+				<li><b>CMSStory</b> #(value.cmsStory)#</li>
+				<li><b>Slug:</b> <span style="color:blue">#(value.cmsStory.getName())#</span></li>
+				<li><b>publishedToWebDate:</b> #(value.cmsStory.publishedToWebDate)#</li>
+				<li>
+					<b>FullLayout:</b> #(value.localFullLayoutID)#
+					<ul>
+						<li><b>FullLayout name:</b> #(value.localFullLayoutID.name)#</li>
+					</ul>
+				</li>
 				<li><b>Total:</b> #(total)#</li>
 				<li><b>Count:</b> #(count)#</li>
 				<csp:if condition=(count=1)>
@@ -86,84 +93,140 @@ Based on DTI's `dt.cms.support.TopSlotStories`.
 > 
 > <ol>
 > 	<li>
-> 		<b>Value:</b> 13@dt.cms.schema.CMSStory
+> 		<b>Value:</b> 13@dt.cms.schema.Mapping
 > 		<ul>
-> 			<li><b>File name:</b> <span style="color:blue">cd.test01.1030</span></li>
-> 			<li><b>publishedToWebDate:</b> 2012-10-30 11:57:08</li>
+> 			<li><b>CMSStory</b> 12@dt.cms.schema.CMSStory</li>
+> 			<li><b>Slug:</b> <span style="color:blue">cd.test01.1030</span></li>
+> 			<li><b>publishedToWebDate:</b> 2012-11-16 17:39:29</li>
+> 			<li>
+> 				<b>FullLayout:</b> 23@dt.cms.schema.LayoutFull
+> 				<ul>
+> 					<li><b>FullLayout name:</b> Default</li>
+> 				</ul>
+> 			</li>
 > 			<li><b>Total:</b> 8</li>
 > 			<li><b>Count:</b> 1</li>
-> 				<li><b style="color:red">First</b></li>
+> 			<li><b style="color:red">First</b></li>
 > 			<li><b>Obj:</b> 11@%Library.ListOfObjects</li>
 > 		</ul>
 > 	</li>
 > 	<li>
-> 		<b>Value:</b> 14@dt.cms.schema.CMSStory
+> 		<b>Value:</b> 14@dt.cms.schema.Mapping
 > 		<ul>
-> 			<li><b>File name:</b> <span style="color:blue">c1.sp.uofootball.0923</span></li>
+> 			<li><b>CMSStory</b> 24@dt.cms.schema.CMSStory</li>
+> 			<li><b>Slug:</b> <span style="color:blue">c1.sp.uofootball.0923</span></li>
 > 			<li><b>publishedToWebDate:</b> 2012-10-30 11:57:07</li>
+> 			<li>
+> 				<b>FullLayout:</b> 23@dt.cms.schema.LayoutFull
+> 				<ul>
+> 					<li><b>FullLayout name:</b> Default</li>
+> 				</ul>
+> 			</li>
 > 			<li><b>Total:</b> 8</li>
 > 			<li><b>Count:</b> 2</li>
 > 			<li><b>Obj:</b> 11@%Library.ListOfObjects</li>
 > 		</ul>
 > 	</li>
 > 	<li>
-> 		<b>Value:</b> 15@dt.cms.schema.CMSStory
+> 		<b>Value:</b> 15@dt.cms.schema.Mapping
 > 		<ul>
-> 			<li><b>File name:</b> <span style="color:blue">c1.sp.osufootball.0923</span></li>
-> 			<li><b>publishedToWebDate:</b> 2012-09-28 16:56:38</li>
+> 			<li><b>CMSStory</b> 27@dt.cms.schema.CMSStory</li>
+> 			<li><b>Slug:</b> <span style="color:blue">c1.sp.osufootball.0923</span></li>
+> 			<li><b>publishedToWebDate:</b> 2012-11-16 17:44:58</li>
+> 			<li>
+> 				<b>FullLayout:</b> 30@dt.cms.schema.LayoutFull
+> 				<ul>
+> 					<li><b>FullLayout name:</b> Test</li>
+> 				</ul>
+> 			</li>
 > 			<li><b>Total:</b> 8</li>
 > 			<li><b>Count:</b> 3</li>
 > 			<li><b>Obj:</b> 11@%Library.ListOfObjects</li>
 > 		</ul>
 > 	</li>
 > 	<li>
-> 		<b>Value:</b> 16@dt.cms.schema.CMSStory
+> 		<b>Value:</b> 16@dt.cms.schema.Mapping
 > 		<ul>
-> 			<li><b>File name:</b> <span style="color:blue">c2.sp.regional.0923</span></li>
+> 			<li><b>CMSStory</b> 31@dt.cms.schema.CMSStory</li>
+> 			<li><b>Slug:</b> <span style="color:blue">c2.sp.regional.0923</span></li>
 > 			<li><b>publishedToWebDate:</b> 2012-09-28 16:55:27</li>
+> 			<li>
+> 				<b>FullLayout:</b> 23@dt.cms.schema.LayoutFull
+> 				<ul>
+> 					<li><b>FullLayout name:</b> Default</li>
+> 				</ul>
+> 			</li>
 > 			<li><b>Total:</b> 8</li>
 > 			<li><b>Count:</b> 4</li>
 > 			<li><b>Obj:</b> 11@%Library.ListOfObjects</li>
 > 		</ul>
 > 	</li>
 > 	<li>
-> 		<b>Value:</b> 17@dt.cms.schema.CMSStory
+> 		<b>Value:</b> 17@dt.cms.schema.Mapping
 > 		<ul>
-> 			<li><b>File name:</b> <span style="color:blue">c3.sp.preps.0923</span></li>
+> 			<li><b>CMSStory</b> 34@dt.cms.schema.CMSStory</li>
+> 			<li><b>Slug:</b> <span style="color:blue">c3.sp.preps.0923</span></li>
 > 			<li><b>publishedToWebDate:</b> 2012-09-28 16:55:27</li>
+> 			<li>
+> 				<b>FullLayout:</b> 23@dt.cms.schema.LayoutFull
+> 				<ul>
+> 					<li><b>FullLayout name:</b> Default</li>
+> 				</ul>
+> 			</li>
 > 			<li><b>Total:</b> 8</li>
 > 			<li><b>Count:</b> 5</li>
 > 			<li><b>Obj:</b> 11@%Library.ListOfObjects</li>
 > 		</ul>
 > 	</li>
 > 	<li>
-> 		<b>Value:</b> 18@dt.cms.schema.CMSStory
+> 		<b>Value:</b> 18@dt.cms.schema.Mapping
 > 		<ul>
-> 			<li><b>File name:</b> <span style="color:blue">c3.sp.timbers.0923</span></li>
+> 			<li><b>CMSStory</b> 37@dt.cms.schema.CMSStory</li>
+> 			<li><b>Slug:</b> <span style="color:blue">c3.sp.timbers.0923</span></li>
 > 			<li><b>publishedToWebDate:</b> 2012-09-28 16:55:27</li>
+> 			<li>
+> 				<b>FullLayout:</b> 23@dt.cms.schema.LayoutFull
+> 				<ul>
+> 					<li><b>FullLayout name:</b> Default</li>
+> 				</ul>
+> 			</li>
 > 			<li><b>Total:</b> 8</li>
 > 			<li><b>Count:</b> 6</li>
 > 			<li><b>Obj:</b> 11@%Library.ListOfObjects</li>
 > 		</ul>
 > 	</li>
 > 	<li>
-> 		<b>Value:</b> 19@dt.cms.schema.CMSStory
+> 		<b>Value:</b> 19@dt.cms.schema.Mapping
 > 		<ul>
-> 			<li><b>File name:</b> <span style="color:blue">c5.sp.fbc_smalls.0923</span></li>
+> 			<li><b>CMSStory</b> 40@dt.cms.schema.CMSStory</li>
+> 			<li><b>Slug:</b> <span style="color:blue">c5.sp.fbc_smalls.0923</span></li>
 > 			<li><b>publishedToWebDate:</b> 2012-09-28 16:55:27</li>
+> 			<li>
+> 				<b>FullLayout:</b> 23@dt.cms.schema.LayoutFull
+> 				<ul>
+> 					<li><b>FullLayout name:</b> Default</li>
+> 				</ul>
+> 			</li>
 > 			<li><b>Total:</b> 8</li>
 > 			<li><b>Count:</b> 7</li>
 > 			<li><b>Obj:</b> 11@%Library.ListOfObjects</li>
 > 		</ul>
 > 	</li>
 > 	<li>
-> 		<b>Value:</b> 20@dt.cms.schema.CMSStory
+> 		<b>Value:</b> 20@dt.cms.schema.Mapping
 > 		<ul>
-> 			<li><b>File name:</b> <span style="color:blue">c6.sp.fbc-pac12.0923</span></li>
+> 			<li><b>CMSStory</b> 43@dt.cms.schema.CMSStory</li>
+> 			<li><b>Slug:</b> <span style="color:blue">c6.sp.fbc-pac12.0923</span></li>
 > 			<li><b>publishedToWebDate:</b> 2012-09-28 16:55:27</li>
+> 			<li>
+> 				<b>FullLayout:</b> 23@dt.cms.schema.LayoutFull
+> 				<ul>
+> 					<li><b>FullLayout name:</b> Default</li>
+> 				</ul>
+> 			</li>
 > 			<li><b>Total:</b> 8</li>
 > 			<li><b>Count:</b> 8</li>
-> 				<li><b style="color:red">Last</b></li>
+> 			<li><b style="color:red">Last</b></li>
 > 			<li><b>Obj:</b> 11@%Library.ListOfObjects</li>
 > 		</ul>
 > 	</li>
@@ -180,7 +243,7 @@ Based on DTI's `dt.cms.support.TopSlotStories`.
 3. `layout`: `Page Layout` name (required).
 4. `grid`: `Grid` name (required).
 5. `area`: `Area`(s) name (required).
-6. `items`: Number of `CMSStory` objects to return; the default number is '`5`'.
+6. `items`: Number of `Mapping` objects to return; the default number is '`5`'.
 7. `include`: Include only these `Slots` (comma delimited list).
 8. `exclude`: Exclude only these `Slots` (comma delimited list).
 9. `version`: `Staging Version`(s) to pull from; '0' (live) used by default.
@@ -191,27 +254,27 @@ Based on DTI's `dt.cms.support.TopSlotStories`.
 ```
 #[ new slotted set slotted = ##class(custom.rg.Slotted).stories("rg", "sports", "sports", "Default", "Top Stories, Stories", 10) ]#
 
-<ul>
+<ol>
 	<csp:loop counter="x" from="1" to="#(slotted.Count())#">
 		<li>#(slotted.GetAt(x))#</li>
 	</csp:loop>
-</ul>
+</ol>
 
 #[ kill slotted ]#
 ```
 
 ### `html` output:
 
-> <ul>
-> 	<li>13@dt.cms.schema.CMSStory</li>
-> 	<li>14@dt.cms.schema.CMSStory</li>
-> 	<li>15@dt.cms.schema.CMSStory</li>
-> 	<li>16@dt.cms.schema.CMSStory</li>
-> 	<li>17@dt.cms.schema.CMSStory</li>
-> 	<li>18@dt.cms.schema.CMSStory</li>
-> 	<li>19@dt.cms.schema.CMSStory</li>
-> 	<li>20@dt.cms.schema.CMSStory</li>
-> </ul>
+> <ol>
+> 	<li>13@dt.cms.schema.Mapping</li>
+> 	<li>14@dt.cms.schema.Mapping</li>
+> 	<li>15@dt.cms.schema.Mapping</li>
+> 	<li>16@dt.cms.schema.Mapping</li>
+> 	<li>17@dt.cms.schema.Mapping</li>
+> 	<li>18@dt.cms.schema.Mapping</li>
+> 	<li>19@dt.cms.schema.Mapping</li>
+> 	<li>20@dt.cms.schema.Mapping</li>
+> </ol>
 
 ---
 

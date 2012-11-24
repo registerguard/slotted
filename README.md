@@ -6,7 +6,7 @@ Tested and optimized for use on DTI's [ContentPublisher](http://www.dtint.com/ou
 
 Based on DTI's `dt.cms.support.TopSlotStories`.
 
-**Many thanks goes to DTI, Joy and Eric for the [pro help and inspiration](https://groups.google.com/forum/#!topic/dti-lightning/5avEj-4twNE/discussion).**
+**Many thanks goes to Joy, Eric and DTI for the [pro help and inspiration](https://groups.google.com/forum/#!topic/dti-lightning/5avEj-4twNE/discussion).**
 
 ---
 
@@ -26,7 +26,7 @@ Based on DTI's `dt.cms.support.TopSlotStories`.
 * Defaults to `gSection.getName()` if a `Section` name is not defined.
 * Lots more DTI-approved error handling goodies.
 * All comma delimited strings are trimmed before being converted into a `$list` for use with the `SQL` statement; no more white space woes! **Woot!** :D
-* Based on the awesome feedback from **Joy** and **Eric**, I've updated the `query` to use `%ResultSet.SQL` with smart parameter handling (**thanks guys!!!!**).
+* Based on the awesome feedback from **Joy** and **Eric**, I've updated the `query` to use `%ResultSet.SQL` with smart parameter handling (thanks guys!!!!).
 
 ---
 
@@ -59,29 +59,7 @@ Based on DTI's `dt.cms.support.TopSlotStories`.
 	
 	 <custom:rg:get:stories layout="sports" grid="Default" area="Top Stories, Stories" items="10" include="" exclude="" version="0" order="" direction="forward" count="count" value="value" obj="obj" total="total">
 		
-		<li>
-			<b>Value:</b> #(value)#
-			<ul>
-				<li><b>CMSStory</b> #(value.cmsStory)#</li>
-				<li><b>Slug:</b> <span style="color:blue">#(value.cmsStory.getName())#</span></li>
-				<li><b>publishedToWebDate:</b> #(value.cmsStory.publishedToWebDate)#</li>
-				<li>
-					<b>FullLayout:</b> #(value.localFullLayoutID)#
-					<ul>
-						<li><b>FullLayout name:</b> #(value.localFullLayoutID.name)#</li>
-					</ul>
-				</li>
-				<li><b>Total:</b> #(total)#</li>
-				<li><b>Count:</b> #(count)#</li>
-				<csp:if condition=(count=1)>
-					<li><b style="color:red">First</b></li>
-				</csp:if>
-				<csp:if condition=(count=total)>
-					<li><b style="color:red">Last</b></li>
-				</csp:if>
-				<li><b>Obj:</b> #(obj)#</li>
-			</ul>
-		</li>
+		#[ new story set story = value.getCMSStory() ]#				<li>			<b>Value:</b> #(value)#			<ul>				<li><b>CMSStory</b> #(story)#</li>				<li><b>Slug:</b> <span style="color:blue">#(story.getName())#</span></li>				<li><b>publishedToWebDate:</b> #(story.publishedToWebDate)#</li>				<li>					<b>FullLayout:</b> #(value.localFullLayoutID)#					<ul>						<li><b>FullLayout name:</b> #(value.localFullLayoutID.name)#</li>					</ul>				</li>				<li><b>Total:</b> #(total)#</li>				<li><b>Count:</b> #(count)#</li>				<csp:if condition=(count=1)>					<li><b style="color:red">First</b></li>				</csp:if>				<csp:if condition=(count=total)>					<li><b style="color:red">Last</b></li>				</csp:if>				<li><b>Obj:</b> #(obj)#</li>			</ul>		</li>				#[ kill story ]#
 		
 	</custom:rg:get:stories>
 	
@@ -312,7 +290,7 @@ Example:
 ```
 <custom:rg:get:stories layout="#(##class(dt.cms.support.Utilities).getCurrentPage(gSection).pageLayoutID.name)#" grid="#(##class(dt.cms.support.Utilities).getCurrentGrid(gSection).name)#" area="Updates" items="10">
 	
-	<dti:story:use storyobj="#(value)#">
+	<dti:story:use storyobj="#(value.getCMSStory())#">
 		
 		<dti:story:element:exist field="Headline">
 			<h1><dti:story:link><dti:story:element field="Headline" extract="textonly" /></dti:story:link></h1>

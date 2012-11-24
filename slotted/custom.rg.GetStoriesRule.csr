@@ -13,7 +13,7 @@
 		</ul>
 		
 		<p>
-			The <code><custom:rg:get:stories></code> RULE (a.k.a tag) returns a %List of <code>Mapping</code> objects from an Area(s) in a Section.
+			The <code>&lt;custom:rg:get:stories&gt;</code> RULE (a.k.a tag) returns a %List of <code>Mapping</code> objects from an Area(s) in a Section.
 			Each object has been assigned to the attribute <code>value</code> which you can access in each itteration of the tag's loop.
 		</p>
 		

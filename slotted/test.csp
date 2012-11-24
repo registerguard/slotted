@@ -9,7 +9,7 @@
 	**
 	**--------------------------------------------------------------------------
 	*/
-
+	
 	/*
 	**----------------------------------
 	** Enter Publication name:
@@ -17,7 +17,7 @@
 	*/
 	
 	set demo("publication") = "rg"
-
+	
 	/*
 	**----------------------------------
 	** Enter Section name:
@@ -25,7 +25,7 @@
 	*/
 	
 	set demo("section") = "sports"
-
+	
 	/*
 	**----------------------------------
 	** Area name(s):
@@ -33,7 +33,7 @@
 	*/
 	
 	set demo("area") = "Top Stories, Stories" // Comma delimited (leading/trailing whitespace is trimmed).
-
+	
 	/*
 	**----------------------------------
 	** Staging versions:
@@ -41,7 +41,7 @@
 	*/
 	
 	set demo("version") = 0 // If more than one, convert to string and use a comma delimiter.
-
+	
 	/*
 	**----------------------------------
 	** Slots to "include":
@@ -49,7 +49,7 @@
 	*/
 	
 	set demo("include") = "" // Comma delimited.
-
+	
 	/*
 	**----------------------------------
 	** Slots to "exclude":
@@ -57,7 +57,7 @@
 	*/
 	
 	set demo("exclude") = "" // Comma delimited.
-
+	
 	/*
 	**----------------------------------
 	** Advanced! Custom ordering:
@@ -65,7 +65,7 @@
 	*/
 	
 	set demo("order") = "" // "mp.cmsStory->publishedToWebDate ASC" // You'll need to check the original query to determine the possible options.
-
+	
 	/*
 	**----------------------------------
 	** Number of items to return:
@@ -123,15 +123,18 @@
 			
 			<custom:rg:get:stories layout="#(g("pagelayout").name)#" grid="#(g("grid").name)#" area="#(demo("area"))#" items="#(demo("items"))#" include="#(demo("include"))#" exclude="#(demo("exclude"))#" version="#(demo("version"))#" order="#(demo("order"))#" direction="forward" count="count" value="value" obj="obj" total="total">
 				
+				#[ new story set story = value.getCMSStory() ]#
+				
 				<li>
 					<b>Value:</b> #(value)#
 					<ul>
-						<li><b>CMSStory</b> #(value.cmsStory)#</li>
-						<li><b>Slug:</b> <span style="color:blue">#(value.cmsStory.getName())#</span></li>
-						<li><b>publishedToWebDate:</b> #(value.cmsStory.publishedToWebDate)#</li>
+						<li><b>CMSStory</b> #(story)#</li>
+						<li><b>Slug:</b> <span style="color:blue">#(story.getName())#</span></li>
+						<li><b>publishedToWebDate:</b> #(story.publishedToWebDate)#</li>
 						<li>
 							<b>FullLayout:</b> #(value.localFullLayoutID)#
 							<ul>
+
 								<li><b>FullLayout name:</b> #(value.localFullLayoutID.name)#</li>
 							</ul>
 						</li>
@@ -146,6 +149,8 @@
 						<li><b>Obj:</b> #(obj)#</li>
 					</ul>
 				</li>
+				
+				#[ kill story ]#
 				
 			</custom:rg:get:stories>
 			
@@ -177,14 +182,13 @@
 
 #[ kill demo, pid ]#
 
+#[ set (gPublication, gSection) = "" ]#
+
 <hr>
 
 <h3>Debug:</h3>
 
 <script language="cache" runat="server">
-	
-	; Garbage collection:
-	set (gPublication, gSection) = ""
 	
 	; Debug:
 	write !, "<pre>"
@@ -195,7 +199,7 @@
 	catch {
 		write "ERROR: ", $ZERROR
 	}
-	if $get(currIO) '= "" {
+	if ($get(currIO) '= "") {
 		do ##class(%SYS.NLS.Device).SetIO(currIO)
 	}
 	write "</pre>"

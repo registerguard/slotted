@@ -6,7 +6,7 @@ Tested and optimized for use on DTI's [ContentPublisher](http://www.dtint.com/ou
 
 Based on DTI's `dt.cms.support.TopSlotStories`.
 
-**Many thanks goes to Joy, Eric and DTI for the [pro help and inspiration](https://groups.google.com/forum/#!topic/dti-lightning/5avEj-4twNE/discussion).**
+**Many thanks goes to Joy, Eric and others at [DTI](http://www.dtint.com/) for the [pro help and inspiration](https://groups.google.com/forum/#!topic/dti-lightning/5avEj-4twNE/discussion).**
 
 ---
 

@@ -1,6 +1,6 @@
 # Slotted
 
-#### Get slotted stories (from the `Mapping` object) using `<custom:rg:get:stories>` tag and/or `##class(custom.rg.GetStoriesRule).stories()` ClassMethod.
+#### Get slotted stories (from the `dt.cms.schema.Mapping` object) using `<custom:rg:get:stories>` tag and/or `##class(custom.rg.GetStoriesRule).stories()` ClassMethod.
 
 Tested and optimized for use on DTI's [ContentPublisher](http://www.dtint.com/our-solutions/content-publisher/) `v7.7.3` system running [Caché](http://www.intersystems.com/cache/index.html) for Windows (`x86-64`) `2009.1.5` (Build `901_0_11112U`).
 
@@ -49,7 +49,7 @@ Based on DTI's `dt.cms.support.TopSlotStories`.
 11. `direction`: Direction of iteration; either forward (default) or backward.
 12. `count`: Loop counter name; the default name is '`count`'.
 13. `value`: `Mapping` object name; the default name is '`value`'.
-14. `obj`: Local `%List` object variable name; the default name is '`obj`'.
+14. `obj`: Local `%ListOfObjects` object variable name; the default name is '`obj`'.
 15. `total`: Total number of `Mapping` objects returned.
 
 ### Example call:

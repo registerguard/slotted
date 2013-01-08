@@ -78,13 +78,13 @@
 
 #[ new pid set pid = ##class(dt.cms.support.Utilities).getPublicationID(demo("publication")) ]#
 
-<csp:object name="gPublication" classname="dt.cms.schema.Publication" objid="#(pid)#">
+<csp:object name="gPublication" classname="dt.cms.schema.Publication" objid="#(pid)#" />
 
 <csp:if condition=($isobject(gPublication))>
 	
 	#[ new sid set sid = ##class(dt.cms.support.Utilities).getSectionID(gPublication, demo("section")) ]#
 	
-	<csp:object name="gSection" classname="dt.cms.schema.Section" objid="#(sid)#">
+	<csp:object name="gSection" classname="dt.cms.schema.Section" objid="#(sid)#" />
 	
 	<csp:if condition=($isobject(gSection))>
 		

@@ -4,15 +4,15 @@ Include Audience
 /// See <code>custom.rg.GetStoriesRule</code> for related code.
 /// 
 /// @docs https://github.com/registerguard/slotted
-/// @copyright Copyright (c) 2012 Micky Hulse/The Register-Guard.
+/// @copyright Copyright (c) 2013 Micky Hulse/The Register-Guard.
 /// @license Released under the Apache License, Version 2.0.
 /// http://www.apache.org/licenses/LICENSE-2.0
-/// @version 2.0.0
-/// @date Monday, November 18, 2012
-Class custom.rg.Slotted Extends (%Persistent, %Populate, %XML.Adaptor)
+/// @version 3.0.0
+/// @date Monday, January 7, 2013
+Class custom.rg.Slotted Extends %RegisteredObject
 {
 
-/// The <method>stories</method> ClassMethod returns a %List of <code>Mapping</code> objects from an Area(s) in a Section.
+/// The <method>stories</method> ClassMethod returns a %ListOfObjects of <class>dt.cms.schema.Mapping</class> objects from an Area(s) in a Section.
 /// Based on DTI's <class>dt.cms.support.TopSlotStories</class>.
 /// Many thanks goes to DTI, Joy and Eric for the pro help and inspiration.
 /// 
@@ -40,7 +40,7 @@ ClassMethod stories(
 	include As %String = "",
 	exclude As %String = "",
 	version As %String = "0",
-	order As %String = "") As %List
+	order As %String = "") As %ListOfObjects
 {
 
 	/**
@@ -135,8 +135,8 @@ ClassMethod stories(
 			AND se.name = 'sports' 
 			AND pl.name = 'sports' 
 			AND gr.name = 'Default' 
-			AND ar.name 'Stories' 
-			AND mp.version '0' 
+			AND ar.name = 'Stories' 
+			AND mp.version = '0' 
 			ORDER BY mp.slotReferenceID ASC
 		*/
 	
@@ -169,7 +169,7 @@ ClassMethod stories(
 			; Convert comma delimited string of Slot Names(s) "excludes" into a $list:
 			$$$lister(exclude)
 		
-			; Add include list to params:
+			; Add exclude list to params:
 			$$$pbuild(exclude)
 		
 			; Amend query:
@@ -224,7 +224,7 @@ ClassMethod stories(
 					set sc = return.Insert(rs.Mapping) // Inserts an element with OREF value oref at the end of the list. Returns a %Status value indicating success or failure. 
 				
 					; Throws if %sc is an error:
-					$$$dtThrow(sc, "Failed to open CMSStory: return.Insert(" _ rs.Mapping _ ")")
+					$$$dtThrow(sc, "Failed to insert Mapping: return.Insert(" _ rs.Mapping _ ")")
 				
 				}
 			
@@ -245,7 +245,7 @@ ClassMethod stories(
 	
 	}
 
-	; Return the %List:
+	; Return the %ListOfObjects:
 	quit return
 }
 

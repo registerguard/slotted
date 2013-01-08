@@ -6,18 +6,18 @@ custom.rg.Slotted
 See <code>custom.rg.GetStoriesRule</code> for related code.
 
 @docs https://github.com/registerguard/slotted
-@copyright Copyright (c) 2012 Micky Hulse/The Register-Guard.
+@copyright Copyright (c) 2013 Micky Hulse/The Register-Guard.
 @license Released under the Apache License, Version 2.0.
 http://www.apache.org/licenses/LICENSE-2.0
-@version 2.0.0
-@date Monday, November 18, 2012]]></Description>
+@version 3.0.0
+@date Monday, January 7, 2013]]></Description>
 <IncludeCode>Audience</IncludeCode>
-<Super>%Persistent,%Populate,%XML.Adaptor</Super>
+<Super>%RegisteredObject</Super>
 <TimeCreated>62770,78274.886304</TimeCreated>
 
 <Method name="stories">
 <Description><![CDATA[
-The <method>stories</method> ClassMethod returns a %List of <code>Mapping</code> objects from an Area(s) in a Section.
+The <method>stories</method> ClassMethod returns a %ListOfObjects of <class>dt.cms.schema.Mapping</class> objects from an Area(s) in a Section.
 Based on DTI's <class>dt.cms.support.TopSlotStories</class>.
 Many thanks goes to DTI, Joy and Eric for the pro help and inspiration.
 
@@ -37,7 +37,7 @@ Many thanks goes to DTI, Joy and Eric for the pro help and inspiration.
 @param order { %String } Custom ORDER BY, used in SQL statement.]]></Description>
 <ClassMethod>1</ClassMethod>
 <FormalSpec>publication:%String="",section:%String="",layout:%String="",grid:%String="",area:%String="",items:%Integer=5,include:%String="",exclude:%String="",version:%String="0",order:%String=""</FormalSpec>
-<ReturnType>%List</ReturnType>
+<ReturnType>%ListOfObjects</ReturnType>
 <Implementation><![CDATA[
 
 	/**
@@ -132,8 +132,8 @@ Many thanks goes to DTI, Joy and Eric for the pro help and inspiration.
 			AND se.name = 'sports' 
 			AND pl.name = 'sports' 
 			AND gr.name = 'Default' 
-			AND ar.name 'Stories' 
-			AND mp.version '0' 
+			AND ar.name = 'Stories' 
+			AND mp.version = '0' 
 			ORDER BY mp.slotReferenceID ASC
 		*/
 	
@@ -166,7 +166,7 @@ Many thanks goes to DTI, Joy and Eric for the pro help and inspiration.
 			; Convert comma delimited string of Slot Names(s) "excludes" into a $list:
 			$$$lister(exclude)
 		
-			; Add include list to params:
+			; Add exclude list to params:
 			$$$pbuild(exclude)
 		
 			; Amend query:
@@ -221,7 +221,7 @@ Many thanks goes to DTI, Joy and Eric for the pro help and inspiration.
 					set sc = return.Insert(rs.Mapping) // Inserts an element with OREF value oref at the end of the list. Returns a %Status value indicating success or failure. 
 				
 					; Throws if %sc is an error:
-					$$$dtThrow(sc, "Failed to open CMSStory: return.Insert(" _ rs.Mapping _ ")")
+					$$$dtThrow(sc, "Failed to insert Mapping: return.Insert(" _ rs.Mapping _ ")")
 				
 				}
 			
@@ -242,7 +242,7 @@ Many thanks goes to DTI, Joy and Eric for the pro help and inspiration.
 	
 	}
 
-	; Return the %List:
+	; Return the %ListOfObjects:
 	quit return
 ]]></Implementation>
 </Method>

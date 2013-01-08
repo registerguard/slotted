@@ -1,9 +1,21 @@
 # Changelog
 
-## vX.X.X
-#### Mmmmm [D]D, YYYY
+## v3.0.0
+#### January 7, 2013
 
-* ...
+* Bumped version number to `v3.0.0`.
+* `custom.rg.Slotted.cls`:
+	* Changed what the class extends from ` (%Persistent, %Populate, %XML.Adaptor)` to `%RegisteredObject`.
+		* Changed `extends` due to [info discussed here](https://groups.google.com/d/topic/dti-lightning/T3WcNsxY5A8/discussion).
+	* Changed return type of class to `%ListOfObjects`.
+	* Minor updates to comments.
+	* Updated error message.
+	* Fixed syntax error in copy/paste SQL comment.
+* `custom.rg.GetStoriesRule.csr`:
+	* Updated comments.
+	* Removed unused line of code.
+* `test.csp`:
+	* Added closing slash to `<csp:object />` tags.
 
 ---
 
@@ -50,5 +62,12 @@
 #### November 9, 2012
 
 * Initial public release on GitHub.
+
+---
+
+## vX.X.X
+#### Mmmmm [D]D, YYYY
+
+* ...
 
 ---

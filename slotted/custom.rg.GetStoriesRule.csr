@@ -7,33 +7,34 @@
 		<h1>custom.rg.GetStoriesRule</h1>
 		
 		<ul>
-			<li>Version: v2.0.0</li>
-			<li>Date: Monday, November 18, 2012</li>
+			<li>Version: v3.0.0</li>
+			<li>Date: Monday, January 7, 2013</li>
 			<li>Docs: <a href="https://github.com/registerguard/slotted">https://github.com/registerguard/slotted</a></li>
 		</ul>
 		
 		<p>
-			The <code>&lt;custom:rg:get:stories&gt;</code> RULE (a.k.a tag) returns a %List of <code>Mapping</code> objects from an Area(s) in a Section.
+			The <code>&lt;custom:rg:get:stories&gt;</code> RULE (a.k.a tag) returns a <class>%ListOfObjects</class> of <class>dt.cms.schema.Mapping</class> objects from an Area(s) in a Section.
+			<br>
 			Each object has been assigned to the attribute <code>value</code> which you can access in each itteration of the tag's loop.
 		</p>
 		
 	</csr:description>
 	
-	<csr:attribute name="publication" description="Publication name; gPublication.GetName() used by default."        type="publication:STRING"          />
-	<csr:attribute name="section"     description="Section name; gSection.GetName() used by default."                type="section:STRING"              />
-	<csr:attribute name="layout"      description="Page Layout name (required)."                                     type="layout:STRING"      required />
-	<csr:attribute name="grid"        description="Grid name (required)."                                            type="grid:STRING"        required />
-	<csr:attribute name="area"        description="Area(s) name (required)."                                         type="area:STRING"        required />
-	<csr:attribute name="items"       description="Number of Mapping objects to return. The default number is '5'."  type="items:INTEGER"               />
-	<csr:attribute name="include"     description="Include only these Slots (comma delimited list)."                 type="include:STRING"              />
-	<csr:attribute name="exclude"     description="Exclude only these Slots (comma delimited list)."                 type="exclude:STRING"              />
-	<csr:attribute name="version"     description="Staging Version(s) to pull from; '0' (live) used by default."     type="version:STRING"              />
-	<csr:attribute name="order"       description="Custom ORDER BY, used in SQL statement."                          type="order:STRING"                />
-	<csr:attribute name="direction"   description="Direction of iteration; either forward (default) or backward."    type="direction:STRING"            />
-	<csr:attribute name="count"       description="Loop counter name; the default name is 'count'."                  type="count:INTEGER"               />
-	<csr:attribute name="value"       description="Mapping object name; the default name is 'value'."                type="value:OBJECT"                />
-	<csr:attribute name="obj"         description="Local %List object variable name; the default name is 'obj'."     type="obj:OBJECT"                  />
-	<csr:attribute name="total"       description="Total number of Mapping objects returned."                        type="total:INTEGER"               />
+	<csr:attribute name="publication" description="Publication name; gPublication.GetName() used by default."             type="publication:STRING"          />
+	<csr:attribute name="section"     description="Section name; gSection.GetName() used by default."                     type="section:STRING"              />
+	<csr:attribute name="layout"      description="Page Layout name (required)."                                          type="layout:STRING"      required />
+	<csr:attribute name="grid"        description="Grid name (required)."                                                 type="grid:STRING"        required />
+	<csr:attribute name="area"        description="Area(s) name (required)."                                              type="area:STRING"        required />
+	<csr:attribute name="items"       description="Number of Mapping objects to return. The default number is '5'."       type="items:INTEGER"               />
+	<csr:attribute name="include"     description="Include only these Slots (comma delimited list)."                      type="include:STRING"              />
+	<csr:attribute name="exclude"     description="Exclude only these Slots (comma delimited list)."                      type="exclude:STRING"              />
+	<csr:attribute name="version"     description="Staging Version(s) to pull from; '0' (live) used by default."          type="version:STRING"              />
+	<csr:attribute name="order"       description="Custom ORDER BY, used in SQL statement."                               type="order:STRING"                />
+	<csr:attribute name="direction"   description="Direction of iteration; either forward (default) or backward."         type="direction:STRING"            />
+	<csr:attribute name="count"       description="Loop counter name; the default name is 'count'."                       type="count:INTEGER"               />
+	<csr:attribute name="value"       description="Mapping object name; the default name is 'value'."                     type="value:OBJECT"                />
+	<csr:attribute name="obj"         description="Local %ListOfObjects object variable name; the default name is 'obj'." type="obj:OBJECT"                  />
+	<csr:attribute name="total"       description="Total number of Mapping objects returned."                             type="total:INTEGER"               />
 	
 	<csr:action>
 		
@@ -46,7 +47,7 @@
 			; Initialize:
 			new csr
 			
-			; QuoteAttribute: The value is quoted for substitution with #()#, ##( )## and ##''## expressions resolved. 
+			; QuoteAttribute: The value is quoted for substitution with #()#, ##( )## and ##''## expressions resolved.
 			set csr("publication") = ##this.QuoteAttribute("publication",    "")
 			set csr("section")     = ##this.QuoteAttribute("section",        "")
 			set csr("layout")      = ##this.QuoteAttribute("layout",         "")
@@ -101,7 +102,6 @@
 			new csr
 			
 			; Get attributes:
-			set csr("direction") = ##this.GetAttribute("direction", "forward")
 			set csr("count")     = ##this.GetAttribute("count",       "count")
 			set csr("value")     = ##this.GetAttribute("value",       "value")
 			set csr("obj")       = ##this.GetAttribute("obj",           "obj")

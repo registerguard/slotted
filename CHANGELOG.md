@@ -14,6 +14,8 @@
 * `custom.rg.GetStoriesRule.csr`:
 	* Updated comments.
 	* Removed unused line of code.
+	* Removed `kill`s, because one was not even getting called and the other was removed for consistency's sake (the `new`s should do the job anyway).
+	* Small formatting tweaks.
 * `test.csp`:
 	* Added closing slash to `<csp:object />` tags.
 

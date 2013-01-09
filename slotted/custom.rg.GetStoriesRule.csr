@@ -79,13 +79,11 @@
 			do ##this.WriteServer(" set " _ csr("obj") _ " = ##class(custom.rg.Slotted).stories($case(" _ csr("publication") _ ", """":gPublication.getName(), :" _ csr("publication") _ "), $case(" _ csr("section") _ ", """":gSection.getName(), :" _ csr("section") _ "), " _ csr("layout") _ ", " _ csr("grid") _ ", " _ csr("area") _ ", " _ csr("items") _ ", " _ csr("include") _ ", " _ csr("exclude") _ ", " _ csr("version") _ ", " _ csr("order") _ ") ")
 			do ##this.WriteServer(" set " _ csr("total") _ " = " _ csr("obj") _ ".Count() ")
 			do ##this.WriteServer(" set " _ csr("count") _ " = """" ")
-			do ##this.WriteServer( ##this.NextLabel _ " set " _ csr("value") _ " = " _ csr("obj") _ ".Get" _ csr("next") _ "(." _ csr("count") _ ") ")
+			do ##this.WriteServer( ##this.NextLabel )
+			do ##this.WriteServer(" set " _ csr("value") _ " = " _ csr("obj") _ ".Get" _ csr("next") _ "(." _ csr("count") _ ") ")
 			do ##this.WriteServer(" if (" _ csr("count") _ " = """") { ")
 			do ##this.WriteServer(" 	goto " _ ##this.EndLabel _ " ;{ ")
 			do ##this.WriteServer(" } ")
-			
-			; Garbage collection:
-			kill csr
 			
 		</script>
 		
@@ -109,9 +107,6 @@
 			
 			; Server garbage collection:
 			do ##this.WriteServer(" kill " _ csr("count") _ ", " _ csr("total") _ ", " _ csr("value") _ ", " _ csr("obj") )
-			
-			; Garbage collection:
-			kill csr
 			
 		</script>
 		
